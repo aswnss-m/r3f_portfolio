@@ -5,6 +5,7 @@ Command: npx gltfjsx@6.2.15 .\public\model\BaseModel.glb
 
 import React, { useRef,useEffect } from 'react'
 import { useGLTF,useFBX,useAnimations } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 
 export function Model(props) {
   const { nodes, materials } = useGLTF('/model/BaseModel.glb')
@@ -12,21 +13,31 @@ export function Model(props) {
 
   // load the animation fbx
   const {animations:greetingAnimation} =useFBX("/animations/standing_greeting.fbx")
-  console.log(greetingAnimation)
+  const {animations:onPhone} = useFBX('/animations/on_phone.fbx')
+  const {animations:pointing} = useFBX('/animations/pointing.fbx')
 
   // name the animation to use it later
   greetingAnimation[0].name = "greeting"
+  onPhone[0].name = "onPhone"
+  pointing[0].name = "pointing"
   
   // apply the animations to the model
-  const {actions} = useAnimations(greetingAnimation, model);
+  const {actions} = useAnimations([greetingAnimation[0], onPhone[0], pointing[0]], model);
 
+  //look at camera
+  useFrame((state)=>{
+    // model.current.getObjectByName('mixamorigHead').lookAt(state.camera.position)
+  })
   // play the animation
   useEffect(()=>{
-    actions['greeting'].reset().play();
-  },[])
+    actions[props.animation].reset().play();
+    return() =>{
+      actions[props.animation].reset().stop();
+    }
+  },[props.animation])
   return (
-    <group {...props} dispose={null} ref={model}>
-      <group  scale={0.015}>
+    <group {...props} dispose={null}>
+      <group  scale={0.015} ref={model}>
         <primitive object={nodes.mixamorigHips} />
         <skinnedMesh geometry={nodes.beard.geometry} material={materials['hair.001']} skeleton={nodes.beard.skeleton} />
         <skinnedMesh geometry={nodes.body.geometry} material={materials['body.001']} skeleton={nodes.body.skeleton} />

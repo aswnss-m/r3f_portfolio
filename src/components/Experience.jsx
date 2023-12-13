@@ -6,7 +6,7 @@ export const Experience = () => {
       {/* <OrbitControls /> */}
       <group position-y={-1.5}>
         <ContactShadows opacity={0.3} scale={20} far={10} resolution={256} blur={1}/>
-        <Model />
+        <Model animation="pointing"/>
       </group>
       <ambientLight intensity={2} />
     </>
