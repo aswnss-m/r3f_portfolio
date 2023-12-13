@@ -8,36 +8,39 @@ import { useGLTF,useFBX,useAnimations } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 
 export function Model(props) {
+  const {animation} = props
   const { nodes, materials } = useGLTF('/model/BaseModel.glb')
   const model = useRef()
 
   // load the animation fbx
-  const {animations:greetingAnimation} =useFBX("/animations/standing_greeting.fbx")
+  const {animations:greeting} =useFBX("/animations/standing_greeting.fbx")
   const {animations:onPhone} = useFBX('/animations/on_phone.fbx')
   const {animations:pointing} = useFBX('/animations/pointing.fbx')
+  const {animations:idle} = useFBX('/animations/standing_idle.fbx')
 
   // name the animation to use it later
-  greetingAnimation[0].name = "greeting"
+  greeting[0].name = "greeting"
   onPhone[0].name = "onPhone"
   pointing[0].name = "pointing"
+  idle[0].name = "idle"
   
   // apply the animations to the model
-  const {actions} = useAnimations([greetingAnimation[0], onPhone[0], pointing[0]], model);
+  const {actions} = useAnimations([greeting[0], onPhone[0], pointing[0], idle[0]], model);
 
   //look at camera
-  useFrame((state)=>{
+  // useFrame((state)=>{
     // model.current.getObjectByName('mixamorigHead').lookAt(state.camera.position)
-  })
+  // })
   // play the animation
   useEffect(()=>{
-    actions[props.animation].reset().play();
+    actions[animation].reset().fadeIn(0.5).play();
     return() =>{
-      actions[props.animation].reset().stop();
+      actions[animation].reset().fadeOut(1);
     }
-  },[props.animation])
+  },[animation])
   return (
-    <group {...props} dispose={null}>
-      <group  scale={0.015} ref={model}>
+    <group {...props} dispose={null} ref={model}>
+      <group scale={0.015}>
         <primitive object={nodes.mixamorigHips} />
         <skinnedMesh geometry={nodes.beard.geometry} material={materials['hair.001']} skeleton={nodes.beard.skeleton} />
         <skinnedMesh geometry={nodes.body.geometry} material={materials['body.001']} skeleton={nodes.body.skeleton} />

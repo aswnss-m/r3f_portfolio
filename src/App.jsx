@@ -1,25 +1,33 @@
 import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
 import Navbar from "./components/ui/Navbar";
-import Hero from "./sections/hero/Hero";
-import About from "./sections/about/About";
+import Section from "./components/ui/Section";
+import Hero from "./sections/hero/Hero"
+import About from "./sections/about/About"
 import Contact from "./sections/contact/Contact";
 import Footer from "./components/ui/Footer";
+import { ScrollControls,Scroll } from "@react-three/drei";
 
 function App() {
   return (
-    <div className="bg-zircon-500">
+    <div className="h-screen bg-zircon-500">
       <Navbar />
-      <Hero />
-      <div className="h-screen w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <Canvas camera={{ position: [0, 0, 7], fov: 30 }} shadows={'soft'}>
-      {/* <color attach="background" args={["#ececec"]} /> */}
-      <Experience />
+      <Experience/>
+      <ScrollControls pages={3} damping={0.1} >
+      <Scroll html>
+        <Section>
+            <Hero />
+        </Section>
+        <Section>
+          <About />
+        </Section>
+        <Section>
+          <Contact />
+        </Section>
+      </Scroll>
+      </ScrollControls>
     </Canvas>
-    </div>
-    <About />
-    <Contact />
-    <Footer />
     </div>
   );
 }
