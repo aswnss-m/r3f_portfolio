@@ -2,12 +2,10 @@ import React from 'react'
 
 function Hero() {
     return (
-        <div className="w-full flex items-center justify-center">
-            <div className='flex items-center justify-center flex-col h-screen'>
-                <p className='justify-self-start w-full font-cursive text-[2rem]'>I'm Aswin</p>
-                <h1 className='text-[15vw] text-zircon-300 font-bold leading-[80%]'>3D ARTIST<span className='font-thin text-[10vw] text-zircon-600'>&</span></h1>
-                <h1 className='text-[15vw] text-zircon-300 font-bold leading-[80%]'>WEB DEV</h1>
-                {/* <h1 className='text-[12vw] text-zircon-500 font-bold'>Web Dev</h1> */}
+        <div className="w-full flex justify-start h-[100%]">
+            <div className=" aspect-square flex justify-end flex-col p-10">
+                <h1 className='text-[10vw] md:text-[5vw] font-semibold leading-3'>3D Artist <span className='font-light'>&</span></h1>
+                <h1 className='text-[10vw] md:text-[5vw] font-semibold'>Web Developer</h1>
             </div>
         </div>
     )
